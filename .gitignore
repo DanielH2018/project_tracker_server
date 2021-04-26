@@ -1,0 +1,12 @@
+# Virtual Environment
+venv/
+# Virtual Studio
+.vscode/
+# Temporary Python Files
+*.pyc
+# Database
+*.sqlite3
+# Environment Variables
+project_tracker_server/.env
+# TODO
+/TODO.txt
