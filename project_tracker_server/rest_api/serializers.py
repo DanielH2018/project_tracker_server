@@ -1,7 +1,6 @@
 from rest_api.models import Project, ProjectMembership, Task
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from django.db import models
 
 class UserSerializer(serializers.ModelSerializer):
 
