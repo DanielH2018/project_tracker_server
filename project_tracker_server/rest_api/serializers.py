@@ -10,10 +10,18 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field='username', required=False)
+    membership = serializers.SerializerMethodField()
+    location = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
         fields = ('__all__')
+
+    def get_membership(self, obj):
+        return ProjectMembership.objects.filter(project=obj, owner=self.context['request'].user).last().id
+
+    def get_location(self, obj):
+        return ProjectMembership.objects.filter(project=obj, owner=self.context['request'].user).last().location
 
     # Create a Project Membership with maximum permissions on Project creation
     def create(self, validated_data):
