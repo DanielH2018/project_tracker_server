@@ -80,7 +80,6 @@ class ProjectTests(APITestCase):
         self.assertEqual(Project.objects.count(), 1)
         project_payload['id'] = 1 # Auto-created field
         project_payload['owner'] = 'Tester' # Auto-created field
-        project_payload['location'] = 1 # Auto-created field default
         self.assertEqual(response.data, project_payload)
 
     def test_get_project_list(self):

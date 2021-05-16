@@ -16,7 +16,6 @@
 {
     name: string,
     description: string,
-    location: int
     owner: string, (username),
 }
 ```
@@ -26,6 +25,7 @@
 {
     project: int,
     owner: string, (username),
+    location: int
     permission_level: int,
 }
 ```
@@ -87,7 +87,6 @@ Authorization: Token
 {
     name: string,
     description: string,
-    location: int,
     owner: string, (username),
 }
 Body:
@@ -116,11 +115,10 @@ POST /projects/
 Authorization: Token
 {
     name: string,
-    location: int, (default 1)
     description: string,
 }
 Body:
-    Required model fields(name, description), and optionally location
+    Required model fields(name, description)
 Returns:
     The created model on success
 ```
@@ -132,7 +130,6 @@ Authorization: Token
 {
     name: string,
     description: string,
-    location: int,
     owner: string, (username),
 }
 Body:
@@ -163,7 +160,9 @@ Authorization: Token
 {
     project: int,
     owner: string, (username),
+    location: int,
     permission_level: int,
+    
 }
 Body:
     Any fields to filter on
@@ -191,6 +190,7 @@ Authorization: Token
 {
     project: int,
     owner: string, (username),
+    location: int, (default 1)
     permission_level: int,
 }
 Body:
@@ -205,6 +205,7 @@ PATCH /projectmemberships/<id>/
 Authorization: Token
 {
     project: int,
+    location: int,
     permission_level: int,
 }
 Body:

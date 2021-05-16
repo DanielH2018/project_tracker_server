@@ -26,7 +26,7 @@ class ProjectFilter(filters.FilterSet):
 
     class Meta:
         model = Project
-        fields = ['name', 'description', 'location']
+        fields = ['name', 'description']
 
 class ProjectMembershipFilter(filters.FilterSet):
 
@@ -40,7 +40,7 @@ class ProjectMembershipFilter(filters.FilterSet):
 
     class Meta:
         model = ProjectMembership
-        fields = ['project', 'permission_level']
+        fields = ['project', 'permission_level', 'location']
 
 class TaskFilter(filters.FilterSet):
 

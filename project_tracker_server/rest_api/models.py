@@ -2,18 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Project(models.Model):
-    # Location Options
-    MAIN = 1
-    ARCHIVE = 2
-    TRASH = 3
-    LOCATIONS = (
-        (MAIN, 'Main'),
-        (ARCHIVE, 'Archive'),
-        (TRASH, 'Trash'),
-    )
     name = models.CharField(max_length=20, null=False, blank=False, default=None)
     description = models.TextField(max_length=200, null=False, blank=True, default='')
-    location = models.IntegerField(choices=LOCATIONS, blank=False, null=False, default=MAIN)
+    
     owner = models.ForeignKey(User, null=False, blank=False, default=None, related_name='projects', on_delete=models.CASCADE)
 
     class Meta:
@@ -29,8 +20,18 @@ class ProjectMembership(models.Model):
         (EDIT, 'Edit'),
         (VIEW, 'View'),
     )
+    # Project Location Options
+    MAIN = 1
+    ARCHIVE = 2
+    TRASH = 3
+    LOCATIONS = (
+        (MAIN, 'Main'),
+        (ARCHIVE, 'Archive'),
+        (TRASH, 'Trash'),
+    )
     project = models.ForeignKey(Project, null=False, blank=False, default=None, related_name='projectMemberships', on_delete=models.CASCADE, editable=False)
     owner = models.ForeignKey(User, null=False, blank=False, default=None, related_name='projectMemberships', on_delete=models.CASCADE, editable=False)
+    location = models.IntegerField(choices=LOCATIONS, blank=False, null=False, default=MAIN)
     permission_level = models.IntegerField(choices=PERMISSION_LEVELS, blank=False, null=False, default=VIEW)
 
     class Meta:
