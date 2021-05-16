@@ -1,3 +1,4 @@
+from django.http import request
 from rest_api.serializers import ProjectSerializer, ProjectMembershipSerializer, TaskSerializer, UserSerializer
 from rest_api.models import Project, ProjectMembership, Task
 from rest_framework import permissions, viewsets
@@ -20,8 +21,12 @@ class ProjectFilter(filters.FilterSet):
         parent = super().qs
         if self.request.path == '/projects/':
             # If you're getting list, and not detail
-            projects = ProjectMembership.objects.filter(owner=self.request.user).values_list('project', flat=True)
-            return parent.filter(id__in=projects)
+            if('location' in self.request.query_params.keys()):
+                projects = ProjectMembership.objects.filter(owner=self.request.user, location=self.request.query_params['location'])
+            else:
+                projects = ProjectMembership.objects.filter(owner=self.request.user)
+            
+            return parent.filter(id__in=projects.values_list('project', flat=True))
         return parent
 
     class Meta:
