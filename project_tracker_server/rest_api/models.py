@@ -75,6 +75,7 @@ class Task(models.Model):
 
     project = models.ForeignKey(Project, null=False, blank=False, default=None, related_name='tasks', on_delete=models.CASCADE, editable=False)
     owner = models.ForeignKey(User, null=False, blank=False, default=None, related_name='tasks', on_delete=models.CASCADE)
+    name = models.TextField(max_length=200, null=False, blank=True, default='')
     description = models.TextField(max_length=200, null=False, blank=True, default='')
     category = models.IntegerField(choices=CATEGORIES, null=False, blank=False, default=TASK)
     priority = models.IntegerField(choices=PRIORITY_LEVELS, blank=False, null=False, default=NONE)

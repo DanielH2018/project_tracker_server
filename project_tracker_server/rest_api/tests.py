@@ -80,6 +80,9 @@ class ProjectTests(APITestCase):
         self.assertEqual(Project.objects.count(), 1)
         project_payload['id'] = 1 # Auto-created field
         project_payload['owner'] = 'Tester' # Auto-created field
+        project_payload['membership'] = 1 # Auto-created field
+        project_payload['location'] = 1 # Auto-created field
+
         self.assertEqual(response.data, project_payload)
 
     def test_get_project_list(self):
@@ -508,7 +511,7 @@ class TaskTests(APITestCase):
         Project.objects.create(name="Project 4", description="Should not be returned", owner=test_user)
 
         # Task Details
-        task_payload = {"project":1, "owner":'Tester', "description":"Test Task", "category":1, "priority":2, "status":3}
+        task_payload = {"project":1, "owner":'Tester', "name":"Test Task Name", "description":"Test Task Description", "category":1, "priority":2, "status":3}
 
         for i in range(2):
             task_num = i + 1
@@ -571,12 +574,13 @@ class TaskTests(APITestCase):
 
             # Task Details
             task_project = Project.objects.get(id=task_num)
-            task_description = "Test Task " + str(task_num)
+            task_name = "Test Task Name " + str(task_num)
+            task_description = "Test Task Description" + str(task_num)
             task_category = task_helper # Only 4 permission levels, skip 0
             task_priority = task_helper # Only 4 permission levels, skip 0
             task_status = task_helper # Only 4 permission levels, skip 0
 
-            Task.objects.create(project=task_project, owner=self.user, description=task_description, category=task_category, priority=task_priority, status=task_status)
+            Task.objects.create(project=task_project, owner=self.user, name=task_name, description=task_description, category=task_category, priority=task_priority, status=task_status)
 
         for i in range(2):
             task_num = i + 3
@@ -584,12 +588,13 @@ class TaskTests(APITestCase):
 
             # Task Details
             task_project = Project.objects.get(id=task_num)
-            task_description = "Test Task " + str(task_num)
+            task_name = "Test Task Name " + str(task_num)
+            task_description = "Test Task Description " + str(task_num)
             task_category = task_helper # Only 4 permission levels, skip 0
             task_priority = task_helper # Only 4 permission levels, skip 0
             task_status = task_helper # Only 4 permission levels, skip 0
 
-            Task.objects.create(project=task_project, owner=test_client.user, description=task_description, category=task_category, priority=task_priority, status=task_status)
+            Task.objects.create(project=task_project, owner=test_client.user, name=task_name, description=task_description, category=task_category, priority=task_priority, status=task_status)
 
         # Request
         url = '/tasks/'
@@ -635,12 +640,13 @@ class TaskTests(APITestCase):
 
             # Task Details
             task_project = Project.objects.get(id=task_num)
-            task_description = "Test Task " + str(task_num)
+            task_name = "Test Task Name " + str(task_num)
+            task_description = "Test Task Description" + str(task_num)
             task_category = task_helper # Only 4 permission levels, skip 0
             task_priority = task_helper # Only 4 permission levels, skip 0
             task_status = task_helper # Only 4 permission levels, skip 0
 
-            Task.objects.create(project=task_project, owner=self.user, description=task_description, category=task_category, priority=task_priority, status=task_status)
+            Task.objects.create(project=task_project, owner=self.user, name=task_name, description=task_description, category=task_category, priority=task_priority, status=task_status)
 
         for i in range(2):
             task_num = i + 3
@@ -648,12 +654,13 @@ class TaskTests(APITestCase):
 
             # Task Details
             task_project = Project.objects.get(id=task_num)
+            task_name = "Test Task Name " + str(task_num)
             task_description = "Test Task " + str(task_num)
             task_category = task_helper # Only 4 permission levels, skip 0
             task_priority = task_helper # Only 4 permission levels, skip 0
             task_status = task_helper # Only 4 permission levels, skip 0
 
-            Task.objects.create(project=task_project, owner=test_client.user, description=task_description, category=task_category, priority=task_priority, status=task_status)
+            Task.objects.create(project=task_project, owner=test_client.user, name=task_name, description=task_description, category=task_category, priority=task_priority, status=task_status)
 
         for i in range(3):
             task_num = i + 1
@@ -709,12 +716,13 @@ class TaskTests(APITestCase):
 
             # Task Details
             task_project = Project.objects.get(id=task_num)
-            task_description = "Test Task " + str(task_num)
+            task_name = "Test Task Name " + str(task_num)
+            task_description = "Test Task Description " + str(task_num)
             task_category = task_helper # Only 4 permission levels, skip 0
             task_priority = task_helper # Only 4 permission levels, skip 0
             task_status = task_helper # Only 4 permission levels, skip 0
 
-            Task.objects.create(project=task_project, owner=self.user, description=task_description, category=task_category, priority=task_priority, status=task_status)
+            Task.objects.create(project=task_project, owner=self.user, name=task_name, description=task_description, category=task_category, priority=task_priority, status=task_status)
 
         for i in range(2):
             task_num = i + 3
@@ -722,12 +730,13 @@ class TaskTests(APITestCase):
 
             # Task Details
             task_project = Project.objects.get(id=task_num)
-            task_description = "Test Task " + str(task_num)
+            task_name = "Test Task Name " + str(task_num)
+            task_description = "Test Task Description " + str(task_num)
             task_category = task_helper # Only 4 permission levels, skip 0
             task_priority = task_helper # Only 4 permission levels, skip 0
             task_status = task_helper # Only 4 permission levels, skip 0
 
-            Task.objects.create(project=task_project, owner=test_client.user, description=task_description, category=task_category, priority=task_priority, status=task_status)
+            Task.objects.create(project=task_project, owner=test_client.user, name=task_name, description=task_description, category=task_category, priority=task_priority, status=task_status)
 
         task_data = {"description": "New Description"}
 
@@ -787,12 +796,13 @@ class TaskTests(APITestCase):
 
             # Task Details
             task_project = Project.objects.get(id=task_num)
-            task_description = "Test Task " + str(task_num)
+            task_name = "Test Task Name " + str(task_num)
+            task_description = "Test Task Description " + str(task_num)
             task_category = task_helper # Only 4 permission levels, skip 0
             task_priority = task_helper # Only 4 permission levels, skip 0
             task_status = task_helper # Only 4 permission levels, skip 0
 
-            Task.objects.create(project=task_project, owner=self.user, description=task_description, category=task_category, priority=task_priority, status=task_status)
+            Task.objects.create(project=task_project, owner=self.user, name=task_name, description=task_description, category=task_category, priority=task_priority, status=task_status)
 
         for i in range(2):
             task_num = i + 3
@@ -800,12 +810,13 @@ class TaskTests(APITestCase):
 
             # Task Details
             task_project = Project.objects.get(id=task_num)
-            task_description = "Test Task " + str(task_num)
+            task_name = "Test Task Name " + str(task_num)
+            task_description = "Test Task Description " + str(task_num)
             task_category = task_helper # Only 4 permission levels, skip 0
             task_priority = task_helper # Only 4 permission levels, skip 0
             task_status = task_helper # Only 4 permission levels, skip 0
 
-            Task.objects.create(project=task_project, owner=test_client.user, description=task_description, category=task_category, priority=task_priority, status=task_status)
+            Task.objects.create(project=task_project, owner=test_client.user, name=task_name, description=task_description, category=task_category, priority=task_priority, status=task_status)
 
         for i in range(2):
             task_num = i + 1

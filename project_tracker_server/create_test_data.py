@@ -92,13 +92,14 @@ def create_test_data():
         task_helper = (i % 4) + 1
 
         # Project Detail
+        task_name = "Test Task Name" + str(i)
         task_description = "Test Task Description " + str(i)
         task_category = task_helper # Only 4 permission levels, skip 0
         task_priority = task_helper # Only 4 permission levels, skip 0
         task_status = task_helper # Only 4 permission levels, skip 0
 
         # Request
-        task_payload = {"project": task_project, "description": task_description, "category": task_category, "priority": task_priority, "status": task_status, "owner": username_arr[user]}
+        task_payload = {"project": task_project, "name": task_name, "description": task_description, "category": task_category, "priority": task_priority, "status": task_status, "owner": username_arr[user]}
         r = requests.post(url=taskUrl, headers=token_auth_arr[user], data=task_payload)
             
 create_test_data()
