@@ -92,7 +92,7 @@ def create_test_data():
         task_helper = (i % 4) + 1
 
         # Project Detail
-        task_name = "Test Task Name" + str(i)
+        task_name = "Test Task Name " + str(i)
         task_description = "Test Task Description " + str(i)
         task_category = task_helper # Only 4 permission levels, skip 0
         task_priority = task_helper # Only 4 permission levels, skip 0
