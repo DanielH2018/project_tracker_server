@@ -35,14 +35,6 @@ class ProjectFilter(filters.FilterSet):
 
 class ProjectMembershipFilter(filters.FilterSet):
 
-    @property
-    def qs(self):
-        parent = super().qs
-        if self.request.path == '/projectmemberships/':
-            # If you're getting list, and not detail
-            return parent.filter(owner=self.request.user)
-        return parent
-
     class Meta:
         model = ProjectMembership
         fields = ['project', 'permission_level', 'location']
