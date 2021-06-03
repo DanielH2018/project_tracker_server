@@ -42,12 +42,12 @@ class Task(models.Model):
     # Categories
     TASK = 1
     FEATURE = 2
-    BUG = 3
+    BUGFIX = 3
     OTHER = 4
     CATEGORIES = (
         (TASK, 'Task'),
         (FEATURE, 'Feature'),
-        (BUG, 'Bug'),
+        (BUGFIX, 'Bug'),
         (OTHER, 'Other'),
     )
     # Priority Levels
