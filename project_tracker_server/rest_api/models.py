@@ -51,12 +51,12 @@ class Task(models.Model):
         (OTHER, 'Other'),
     )
     # Priority Levels
-    NONE = 1
+    Wishlist = 1
     LOW = 2
     MEDIUM = 3
     HIGH = 4
     PRIORITY_LEVELS = (
-        (NONE, 'None'),
+        (Wishlist, 'None'),
         (LOW, 'Low'),
         (MEDIUM, 'Medium'),
         (HIGH, "High"),
@@ -78,7 +78,7 @@ class Task(models.Model):
     name = models.TextField(max_length=200, null=False, blank=True, default='')
     description = models.TextField(max_length=200, null=False, blank=True, default='')
     category = models.IntegerField(choices=CATEGORIES, null=False, blank=False, default=TASK)
-    priority = models.IntegerField(choices=PRIORITY_LEVELS, blank=False, null=False, default=NONE)
+    priority = models.IntegerField(choices=PRIORITY_LEVELS, blank=False, null=False, default=Wishlist)
     status = models.IntegerField(choices=STATUSES, blank=False, null=False, default=BACKLOG)
 
     class Meta:
