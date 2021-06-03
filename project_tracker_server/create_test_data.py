@@ -68,17 +68,17 @@ def create_test_data():
 
     # Create Project Memberships
     for i in range(num_memberships):
-        project_membership_num = (i % num_projects) + 1
+        project_num = (i % num_projects) + 1
         
         user = (i % num_users) + 1
 
         owner = ((user + int(i / num_users)) % num_users) + 1
 
         # Project Detail
-        project_membership_permission_level = (i % 3) + 1 # Only 3 permission levels, skip 0
+        project_membership_permission_level = (i % 2) + 2 # Only 3 permission levels, don't create any share(1)
 
         # Request
-        project_membership_payload = {"project": project_membership_num, "owner":username_arr[owner], "permission_level": project_membership_permission_level}
+        project_membership_payload = {"project": project_num, "owner":username_arr[owner], "permission_level": project_membership_permission_level}
         r = requests.post(url=membershipUrl, headers=token_auth_arr[user], data=project_membership_payload)
 
     num_tasks = num_users * (num_projects - 1)
