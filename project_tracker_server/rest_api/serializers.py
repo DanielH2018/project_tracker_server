@@ -11,6 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     owner = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field='username', required=False)
     membership = serializers.SerializerMethodField()
+    permission_level = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
 
     class Meta:
@@ -19,6 +20,9 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_membership(self, obj):
         return ProjectMembership.objects.filter(project=obj, owner=self.context['request'].user).last().id
+
+    def get_permission_level(self, obj):
+        return ProjectMembership.objects.filter(project=obj, owner=self.context['request'].user).last().permission_level
 
     def get_location(self, obj):
         return ProjectMembership.objects.filter(project=obj, owner=self.context['request'].user).last().location
