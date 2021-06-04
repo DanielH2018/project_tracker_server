@@ -14,6 +14,7 @@
 ### Model: Project
 ```
 {
+    id: int,
     name: string,
     description: string,
     owner: string, (username),
@@ -23,6 +24,7 @@
 ### Model: Project Membership
 ```
 {
+    id: int,
     project: int,
     owner: string, (username),
     location: int
@@ -33,8 +35,10 @@
 ### Model: Task
 ```
 {
+    id: int,
     project: int,
     owner: string, (username),
+    name: string,
     description: string, (Max length 200),
     category: string, (Max length 20),
     priority: int,
@@ -85,9 +89,13 @@ GET /projects/
 Authorization: Token
 
 {
+    id: int,
     name: string,
     description: string,
     owner: string, (username),
+    location: int,
+    membership: int,
+    permission_level: int,
 }
 Body:
     Any fields to filter on
@@ -106,7 +114,7 @@ Authorization: Token
 Body:
     None
 Returns:
-    Model, if it exists
+    Model, if it exists, with location, membership id, and permission level associated with requesting user and project
 ```
 
 #### POST
@@ -158,6 +166,7 @@ Returns:
 GET /projectmemberships/
 Authorization: Token
 {
+    id: int,
     project: int,
     owner: string, (username),
     location: int,
@@ -234,8 +243,10 @@ Returns:
 GET /tasks/
 Authorization: Token
 {
+    id: int,
     project: int,
     owner: string, (username),
+    name: string,
     description: string, (Max length 200),
     category: int,
     priority: int,
