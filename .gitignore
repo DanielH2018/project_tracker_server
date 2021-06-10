@@ -10,3 +10,9 @@ venv/
 project_tracker_server/.env
 # TODO
 /TODO.txt
+
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

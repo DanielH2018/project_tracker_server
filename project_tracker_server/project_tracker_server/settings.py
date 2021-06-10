@@ -12,7 +12,19 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+import subprocess
+import ast
 import os
+
+def get_environ_vars():
+    completed_process = subprocess.run(
+        ['/opt/elasticbeanstalk/bin/get-config', 'environment'],
+        stdout=subprocess.PIPE,
+        text=True,
+        check=True
+    )
+
+    return ast.literal_eval(completed_process.stdout)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,8 +40,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['127.0.0.1', '10.0.2.2']
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -83,12 +94,41 @@ WSGI_APPLICATION = 'project_tracker_server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if 'RDS_HOSTNAME' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',  # Postgres
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        },
     }
-}
+else:
+    env_vars = get_environ_vars()
+    if 'RDS_HOSTNAME' in env_vars:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',  # Postgres
+                'NAME': env_vars['RDS_DB_NAME'],
+                'USER': env_vars['RDS_USERNAME'],
+                'PASSWORD': env_vars['RDS_PASSWORD'],
+                'HOST': env_vars['RDS_HOSTNAME'],
+                'PORT': env_vars['RDS_PORT'],
+            },
+        }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',  # Postgres
+                'NAME': 'daniel',  # Or path to database file if using sqlite3.
+                'USER': 'daniel',
+                'PASSWORD': 'password',
+                'HOST': '',
+                'PORT': '',
+            },
+        }
 
 
 # Password validation
@@ -128,6 +168,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
